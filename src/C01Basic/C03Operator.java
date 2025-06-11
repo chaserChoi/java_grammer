@@ -67,6 +67,14 @@ public class C03Operator {
 //        System.out.println(b2);
 
         // 비트연산자 : 컴퓨터의 2진체계에서의 연산 방식 & | ^ << >>
-
+        int n1 = 5;
+        int n2 = 4;
+        // 두 수를 & 비트 연산하게 되면 각 자릿수에 모두 1이 있어야 1의 결과값이 나옴
+        System.out.println(n1 & n2);
+        System.out.println(n1 | n2);
+        // 왼쪽으로 1칸 옮기기 => 해당 숫자 값에 X2 한다
+        System.out.println(n1 << 1);
+        // 오른쪽으로 1칸 옮기기 => 해당 숫자값에 /2 한다
+        System.out.println(n1 >> 1);
     }
 }
