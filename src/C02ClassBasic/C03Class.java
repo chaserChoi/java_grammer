@@ -20,13 +20,13 @@ public class C03Class {
         // A 부서 매출 : 10원, 20원
         MyCalculatorInstance mi1 = new MyCalculatorInstance();
 //        MyCalculatorInstance.sumAcc(); // staitc이 없으므로 sumAcc는 호출이 불가 -> 객체로 만들어서 호출해야 함
-        System.out.println(mi1.sumAcc(10));
-        System.out.println(mi1.sumAcc(20));
+//        System.out.println(mi1.sumAcc(10));
+//        System.out.println(mi1.sumAcc(20));
 
         // B 부서 매출 : 10원, 20원
         MyCalculatorInstance mi2 = new MyCalculatorInstance();
-        System.out.println(mi2.sumAcc(10));
-        System.out.println(mi2.sumAcc(20));
+//        System.out.println(mi2.sumAcc(10));
+//        System.out.println(mi2.sumAcc(20));
 
         System.out.println(MyCalculatorInstance.total_count);
 
