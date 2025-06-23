@@ -171,11 +171,13 @@ public class C10BoardService {
 class Author {
     // 필드
     // 일반적으로 클래스를 정의할 때 원시 자료형은 Wrapper 클래스로 정의
-    private static long sequence = 1L; // auto_increment 역할
-    private long id;
+    private static Long sequence = 1L; // auto_increment 역할
+    private Long id;
     private String name;
     private String email;
     private String password;
+    // Author 객체에 본인이 쓴 글 목록인 postList 객체를 만들어둠으로서 편의성 향상
+//    private List<Post> postList = new ArrayList<>();
 
     // 생성자
     public Author(String name, String email, String password) {
@@ -207,6 +209,7 @@ class Author {
         for (Post post : postList) {
             if (post.selectAuthorEmail().selectId() == this.id) {
                 postCount++;
+
             }
         }
         return postCount;
@@ -215,8 +218,8 @@ class Author {
 
 class Post {
     // 필드
-    private static long sequence = 1L;
-    private long id;
+    private static Long sequence = 1L;
+    private Long id;
     private String title;
     private String contents;
     private Author author;
