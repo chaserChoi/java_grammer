@@ -1,9 +1,6 @@
 package C05AnonymousLambda;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -104,5 +101,105 @@ public class C04StreamApi {
         // 자바의 런타임 시점에 <String>과 같은 제네릭의 타입 소거 발생
         // 제네릭의 타입 소거로 인해, toArray를 통해 바로 새로운 String 배열을 만드는 것은 불가
         String[] answer = Arrays.stream(stArr).filter(a -> a.length() >= 5).toArray(a -> new String[a]);
+
+        // 메서드 참조 : 하나의 메서드만을 호출하는 경우에 매개변수 제거한 방식. 클래스명::메서드명
+        Arrays.stream(stArr).forEach(System.out::println);
+        String[] answer2 = Arrays.stream(stArr).filter(a -> a.length() >= 5).toArray(a -> new String[a]);
+
+        // 1. 모든 객체의 평균 나이
+        List<Student> studentArr = new ArrayList<>();
+        studentArr.add(new Student("kim", 24));
+        studentArr.add(new Student("lee", 21));
+        studentArr.add(new Student("park", 35));
+        studentArr.add(new Student("choi", 15));
+
+        double averageAge = studentArr.stream().mapToInt(a -> a.getAge()).average().getAsDouble();
+        System.out.println(averageAge);
+
+        // 2. 정렬을 통한 가장 나이 어린 사람 찾기
+        studentArr.stream().sorted((o1, o2) -> o1.getAge() - o2.getAge())
+                .findFirst()
+                .ifPresent(a -> System.out.println(a.getName() + " " + a.getAge()));
+
+//        // 3. 30대면 사람들의 이름만 모아서 새로운 String 배열 담기
+//        String[] arr = studentArr.stream().filter(a -> a.getAge() >= 30).map(a -> a.getName()).toArray(String[]::new);
+//        System.out.println(arr);
+
+//        // Optional 객체 : 특정 객체에 값이 없을지도 모른다는 것을 명시적으로 표현
+//        String st1 = null;
+//        if (st1 != null) {
+//            System.out.println(st1.compareTo("hello"));
+//        } else {
+//            System.out.println("값이 없습니다.");
+//        }
+//        Optional<String> opt1 = Optional.ofNullable(null);
+//        if (opt1.isPresent()) {
+//            System.out.println(opt1.get().compareTo("hello"));
+//        } else {
+//            System.out.println("값이 없습니다.");
+//        }
+
+        // Optional 객체 생성 방법 3가지
+        Optional<String> opt1 = Optional.empty(); // 비어 있는 Optional 객체 생성
+        Optional<String> opt2_1 = Optional.ofNullable(null); // 비어 있는 Optional 객체 생성
+        Optional<String> opt2_2 = Optional.ofNullable("hello"); // 값이 있는 Optional 객체 생성
+        Optional<String> opt3 = Optional.of("hello"); // 값이 있는 Optional 객체 생성
+
+//        // Optional 객체 처리 방법 4가지
+//        // 방법1. isPresent()로 확인 후에 get()
+//        if (opt2_1.isPresent()) {
+//            System.out.println(opt2_1.get());
+//        } else {
+//            System.out.println(opt2_1.get()); // no value present 에러 발생
+//            System.out.println("값이 없습니다.");
+//        }
+
+//        // 방법2. orElse() : 값이 있으면 있는 값 return, 없으면 지정한 값 return
+//        System.out.println(opt2_1.orElse("값이 없습니다."));
+//        System.out.println(opt2_2.orElse("값이 없습니다."));
+//
+//        // 방법3. orElseGet() : 값이 있으면 있는 값 return, 없으면 람다 함수 실행
+//        System.out.println(opt1.orElseGet(() -> new String("값이 없습니다.")));
+
+        // 방법4. (가장 많이 사용) orElseThrow() : 값이 있으면 있는 값 return, 없으면 지정된 예외(에러) 강제 발생
+        // 개발에서 사용자에게 적절한 메시지 전달 목적과 의도된 코드 중단을 목표로 강제로 예외 발생시키는 경우는 매우 많음.
+//        System.out.println(opt2_1.orElseThrow(() -> new RuntimeException("값이 없습니다."))); // 에러 발생, 의도된 코드 중단
+//        System.out.println(opt2_1.get()); // 에러 발생, 의도치 않은 에러 발생
+
+//        // Optional 객체 예시1
+        List<Student> studentList = new ArrayList<>();
+//        // 평균 구하기 방법1
+//        OptionalDouble age = studentList.stream().mapToInt(a -> a.getAge()).average();
+//        if (age.isPresent()) {
+//            System.out.println(age.getAsDouble());
+//        } else {
+//            throw new NoSuchElementException("값이 없습니다.");
+//        }
+
+//        // 평균 구하기 방법2
+//        System.out.println(
+//                studentList.stream().mapToInt(a -> a.getAge()).average()
+//                        .orElseThrow(() -> new NoSuchElementException("값이 없습니다. 확인해주세요."))
+//        );
+
+        // Optional 객체 예시2
+        studentList.add(new Student("kim", 24));
+        studentList.add(new Student("lee", 21));
+        studentList.add(new Student("park", 35));
+        studentList.add(new Student("choi", 15));
+        System.out.println("조회하고자 하는 student의 index 번호를 입력해주세요.");
+        Scanner sc = new Scanner(System.in);
+        int indexNumber = Integer.parseInt(sc.nextLine());
+        // index 범위가 list 안에 있으면 Optional.ofNullable 또는 of, ofEmpty 생성
+        System.out.println(Optional.ofNullable(studentList.get(indexNumber)).orElseThrow(() -> new IndexOutOfBoundsException("해당 index 범위에 벗어났습니다. 확인해주세요.")));
+        Optional<Student> optStudent;
+        if (studentList.size() <= indexNumber) {
+            optStudent = Optional.empty();
+        } else {
+            optStudent = Optional.ofNullable(studentList.get(indexNumber));
+        }
+
+//        System.out.println(studentList.get(indexNumber));
+        System.out.println(optStudent.orElseThrow(() -> new NoSuchElementException("입력하신 index는 존재하지 않습니다. 다시 확인해주세요.")));
     }
 }
